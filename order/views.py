@@ -25,11 +25,12 @@ def shop(request):
         return JsonResponse(serializer.errors, status=400)
 
 @csrf_exempt
-def menu(request):
+def menu(request, shop):
     if request.method == "GET":
-        menu = Menu.objects.all()
-        serializer = MenuSerializer(menu, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        menu = Menu.objects.filter(shop=shop)
+        # serializer = MenuSerializer(menu, many=True)
+        # return JsonResponse(serializer.data, safe=False)
+        return render(request, "order/menu_list.html", {"menu_list": menu})
 
     elif request.method == "POST":
         data = JSONParser().parse(request)
