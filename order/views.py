@@ -10,9 +10,11 @@ from .serializers import MenuSerializer, ShopSerializer
 @csrf_exempt
 def shop(request):
     if request.method == "GET":
+        # shop = Shop.objects.all()
+        # serializer = ShopSerializer(shop, many=True)
+        # return JsonResponse(serializer.data, safe=False)
         shop = Shop.objects.all()
-        serializer = ShopSerializer(shop, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return render(request, "order/shop_list.html", {"shop_list": shop})
 
     elif request.method == "POST":
         data = JSONParser().parse(request)
