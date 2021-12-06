@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
+from user.models import User
 
 from .models import Menu, Order, Orderfood, Shop
 from .serializers import MenuSerializer, ShopSerializer
@@ -14,8 +15,16 @@ def shop(request):
         # shop = Shop.objects.all()
         # serializer = ShopSerializer(shop, many=True)
         # return JsonResponse(serializer.data, safe=False)
-        shop = Shop.objects.all()
-        return render(request, "order/shop_list.html", {"shop_list": shop})
+        try:
+            if User.objects.get(id=request.session["user_id"]).user_type==0:
+                shop = Shop.objects.all()
+                return render(request, "order/shop_list.html", {"shop_list": shop})
+            else:
+                return render(request,"order/fail.html")
+        except Exception as e:
+            print(e)
+            return render(request,"order/fail.html")
+        
 
     elif request.method == "POST":
         data = JSONParser().parse(request)
