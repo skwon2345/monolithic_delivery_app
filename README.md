@@ -1,6 +1,7 @@
 # monolithic_delivery_app
 ## Intro
 - Web Server: Nginx
+- WSGI: uWSGI
 - WAS: Django
 - Two separate containers using Docker
   1. Django container
